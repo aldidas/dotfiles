@@ -1,151 +1,162 @@
-unbind C-b
-set -g prefix C-a
-set-option -g default-command "reattach-to-user-namespace -l $SHELL"
-set -g -a terminal-overrides ',*:Ss=\E[%p1%d q:Se=\E[2 q'
+set nocompatible
+syntax enable
+set showcmd
+filetype off
+set smartcase
+set nowrap
+set number
+set cursorline
+set backspace=indent,eol,start
+set hidden
+set foldmethod=indent
+set foldnestmax=10
+set nofoldenable
+set lazyredraw
+set foldlevel=2
+set mouse=a
+if has("mouse_sgr")
+	set ttymouse=sgr
+else
+	if !has('nvim')
+		set ttymouse=xterm2
+	endif
+end
+set clipboard=unnamed
 
-# 0 is too far from ` ;)
-set -g base-index 1
+call plug#begin('~/.vim/plugged')
 
-# Automatically set window title
-set-window-option -g automatic-rename on
-set-option -g set-titles on
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'mattn/emmet-vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'myusuf3/numbers.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-obsession'
+Plug 'airblade/vim-gitgutter'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'dikiaap/minimalist'
+Plug 'chriskempson/base16-vim'
+Plug 'tpope/vim-surround'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'yarn global add tern' }
+Plug 'mhartington/nvim-typescript'
+Plug 'easymotion/vim-easymotion'
+Plug 'lepture/vim-jinja'
+Plug 'gioele/vim-autoswap'
+Plug 'yuttie/comfortable-motion.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
+Plug 'chrisbra/NrrwRgn'
+Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'elzr/vim-json'
+Plug 'trevordmiller/nova-vim'
+Plug 'w0rp/ale'
+Plug 'morhetz/gruvbox'
+Plug 'nathanaelkane/vim-indent-guides'
 
-set -g status-keys vi
-set -g history-limit 10000
+call plug#end()
 
-setw -g mode-keys vi
-setw -g mouse on
-setw -g monitor-activity on
-set -g @resurrect-strategy-vim 'session'
+let mapleader = ','
+let g:jsx_ext_required = 0
 
-bind-key v split-window -h -c '#{pane_current_path}'
-bind-key s split-window -v -c '#{pane_current_path}'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#show_close_button = 1
+let g:airline#extensions#tabline#close_symbol = '✖︎'
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_mode_map = {
+\ '__' : '-',
+\ 'n' : 'N',
+\ 'i' : 'I',
+\ 'R' : 'R',
+\ 'c': 'C',
+\ 'v': 'V',
+\ 'V': 'V',
+\ }
 
-bind-key J resize-pane -D 5
-bind-key K resize-pane -U 5
-bind-key H resize-pane -L 5
-bind-key L resize-pane -R 5
+let g:ale_linters = {
+\ 'javascript': ['eslint']
+\ }
+let g:ale_fixers = {
+\ 'javascript': ['eslint']
+\ }
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠︎'
+let g:gruvbox_vert_split = 'bg3'
+let g:gruvbox_invert_tabline = 1
 
-bind-key M-j resize-pane -D
-bind-key M-k resize-pane -U
-bind-key M-h resize-pane -L
-bind-key M-l resize-pane -R
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#ternjs#tern_bin = '/Users/aldidas/.config/yarn/global/node_modules/tern/bin/tern'
+let g:deoplete#sources#ternjs#types = 1
+let g:deoplete#sources#ternjs#docs = 1
+let g:deoplete#file#enable_buffer_path = 1
+let g:deoplete#sources#ternjs#filetypes = [
+\ 'jsx'
+\ ]
 
-# Vim style pane selection
-bind h select-pane -L
-bind j select-pane -D 
-bind k select-pane -U
-bind l select-pane -R
+let g:nvim_typescript#javascript_support = 1
+let g:indentLine_char = '|'
+let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
+let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 
-# Use Alt-vim keys without prefix key to switch panes
-bind -n M-h select-pane -L
-bind -n M-j select-pane -D 
-bind -n M-k select-pane -U
-bind -n M-l select-pane -R
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-T> :NERDTreeToggle<CR>
+nnoremap <C-F><C-F> :NERDTreeFind<CR>
+nnoremap <C-B><C-B> :TagbarToggle<CR>
+nnoremap <Leader>ig :IndentGuidesToggle<CR>
+map <C-Tab> :bn<CR>
+map <C-S-Tab> :bp<CR>
+map <C-P> :Files<CR>
+map <Leader>f :Find<space>
 
-# Use Alt-arrow keys without prefix key to switch panes
-bind -n M-Left select-pane -L
-bind -n M-Right select-pane -R
-bind -n M-Up select-pane -U
-bind -n M-Down select-pane -D
+iabbrev </ </<C-X><C-O>
 
-# Shift arrow to switch windows
-bind -n S-Left  previous-window
-bind -n S-Right next-window
+inoremap <up> <nop>
+vnoremap <up> <nop>
+nnoremap <up> <nop>
+inoremap <down> <nop>
+vnoremap <down> <nop>
+nnoremap <down> <nop>
+inoremap <left> <nop>
+vnoremap <left> <nop>
+nnoremap <left> <nop>
+inoremap <right> <nop>
+vnoremap <right> <nop>
+nnoremap <right> <nop>
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-# No delay for escape key press
-set -sg escape-time 0
+set t_Co=256
+set background=dark
+if has("gui_mac")
+	set guioptions=
+	set macligatures
+	set guifont=Fira\ Code\ Light:h15
+	set linespace=10
+endif
+set t_8b=^[[48;2;%lu;%lu;%lum
+set t_8f=^[[38;2;%lu;%lu;%lum
+set splitright
+set splitbelow
+set diffopt+=vertical
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+au BufNewFile,BufRead *.html,*.htm,*.twig,*.njk,*.nunjuck set ft=jinja
+colorscheme gruvbox 
+hi CursorLine cterm=NONE ctermbg=236
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 
-# copy - paste stuff
-setw -g mode-keys vi
-bind-key -T copy-mode-vi v send-keys -X begin-selection
-bind-key -T copy-mode-vi y send-keys -X copy-pipe "reattach-to-user-namespace pbcopy"
-unbind -T copy-mode-vi Enter
-bind-key -T copy-mode-vi Enter send-keys -X copy-pipe "reattach-to-user-namespace pbcopy"
-bind ] run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"
-
-# Reload tmux config
-bind r source-file ~/.tmux.conf
-
-# THEME
-######################
-### DESIGN CHANGES ###
-######################
-
-# panes
-set -g pane-border-fg black
-set -g pane-active-border-fg brightred
-
-## Status bar design
-# status line
-set -g status-justify left
-set -g status-bg default
-set -g status-fg colour12
-set -g status-interval 2
-
-# messaging
-set -g message-fg black
-set -g message-bg yellow
-set -g message-command-fg blue
-set -g message-command-bg black
-
-# loud or quiet?
-set-option -g visual-activity off
-set-option -g visual-bell off
-set-option -g visual-silence off
-set-window-option -g monitor-activity off
-set-option -g bell-action none
-
- #The modes {
-setw -g clock-mode-colour colour132
-setw -g mode-attr bold
-setw -g mode-fg colour124
-setw -g mode-bg colour235
-
- #}
- #The panes {
-
-set -g pane-border-bg colour235
-set -g pane-border-fg colour235
-set -g pane-active-border-bg colour235
-set -g pane-active-border-fg colour250
-
- #}
- #The statusbar {
-
-set -g status-position bottom
-set -g status-bg colour237
-set -g status-fg colour246
-set -g status-attr dim
-set -g status-left ' ♞  '
-set -g status-right '#[fg=colour235,bg=colour208] aldidas #[fg=colour235,bg=colour166] #S '
-set -g status-right-length 40
-set -g status-left-length 20
-
-setw -g window-status-current-fg colour214
-setw -g window-status-current-bg colour235
-setw -g window-status-current-attr bold
-setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour50]#F '
-
-setw -g window-status-fg colour132
-setw -g window-status-bg colour238
-setw -g window-status-attr none
-setw -g window-status-format ' #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F '
-
-setw -g window-status-bell-attr bold
-setw -g window-status-bell-fg colour255
-setw -g window-status-bell-bg colour1
-
-## }
-## The messages {
-
-set -g message-attr bold
-set -g message-fg colour232
-set -g message-bg colour166
-
-## }
-
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-
-run '~/.tmux/plugins/tpm/tpm'
