@@ -34,8 +34,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'mattn/emmet-vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'myusuf3/numbers.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'idanarye/vim-merginal'
@@ -45,26 +44,20 @@ Plug 'airblade/vim-gitgutter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'dikiaap/minimalist'
-Plug 'chriskempson/base16-vim'
 Plug 'neoclide/coc.nvim', { 'do': { -> coc#util#install() } }
-Plug 'easymotion/vim-easymotion'
 Plug 'lepture/vim-jinja'
 Plug 'gioele/vim-autoswap'
-Plug 'yuttie/comfortable-motion.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
 Plug 'elzr/vim-json'
 Plug 'w0rp/ale'
-Plug 'morhetz/gruvbox'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'digitaltoad/vim-pug'
 Plug 'posva/vim-vue'
 Plug 'junegunn/gv.vim'
-Plug 'junegunn/goyo.vim'
 Plug 'jparise/vim-graphql'
 Plug 'dracula/vim', { 'as': 'dracula' }
 
@@ -73,20 +66,48 @@ call plug#end()
 let mapleader = ','
 let g:jsx_ext_required = 0
 let g:NERDTreeWinSize = 30
-let g:airline_theme='dracula'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 0
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-let g:airline_mode_map = {
-\ '__' : '-',
-\ 'n' : '<N>',
-\ 'i' : '<I>',
-\ 'R' : '<R>',
-\ 'c': '<C>',
-\ 'v': '<V>',
-\ 'V': '<V>',
-\ }
+let g:lightline = {
+    \ 'colorscheme': 'dracula',
+    \ 'active': {
+    \ 'left': [ ['mode', 'paste'], [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component': {
+    \   'lineinfo': '„Äã %3l:%-2v'
+    \ },
+    \ 'component_function': {
+    \   'readonly': 'LightlineReadonly',
+    \   'gitbranch': 'LightlineFugitive'
+    \ },
+    \ 'separator': {
+    \ 'right': '„Äã', 'left': '„Ää'
+    \ },
+    \ 'subseparator': {
+    \ 'right': '„Äã', 'left': '„Ää'
+    \ },
+    \ 'mode_map': {
+    \ 'n' : '<N>',
+    \ 'i' : '<I>',
+    \ 'R' : '<R>',
+    \ 'v' : '<V>',
+    \ 'V' : '<VL>',
+    \ "\<C-v>": '<VB>',
+    \ 'c' : '<C>',
+    \ 's' : '<S>',
+    \ 'S' : '<SL>',
+    \ "\<C-s>": '<SB>',
+    \ 't': '<T>',
+    \ }
+    \ }
+function! LightlineReadonly()
+    return &readonly ? "\ue0a2 " : ''
+endfunction
+function! LightlineFugitive()
+    if exists('*fugitive#head')
+        let branch = fugitive#head()
+        return branch !=# '' ? "\ue0a0 ".branch : ''
+    endif
+    return ''
+endfunction
 
 let g:ale_linters = {
 \ 'javascript': ['eslint']
@@ -96,17 +117,9 @@ let g:ale_fixers = {
 \ }
 let g:ale_sign_error = 'x'
 let g:ale_sign_warning = '!'
-let g:tern_request_timeout = 1
-let g:tern_request_timeout = 6000
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
 let g:indentLine_char = '|'
 let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
 let g:Tlist_Ctags_Cmd = '/usr/local/Cellar/ctags/5.8_1/bin/ctags'
-let g:numbers_exclude = ['goyo.vim']
-let g:goyo_width = 100
-let g:goyo_margin_top = 2
-let g:goyo_margin_bottom = 2
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -128,6 +141,10 @@ map <Leader>b :Buffers<CR>
 map <Leader>G :NumbersDisable<CR>:Goyo<CR>
 map <Leader>g :NumbersEnable<CR>:Goyo!<CR>
 map <Leader>ns :%s/\s\+$//e<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 iabbrev </ </<C-X><C-O>
 
