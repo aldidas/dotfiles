@@ -128,7 +128,6 @@ let g:ale_sign_error = 'x'
 let g:ale_sign_warning = '!'
 let g:indentLine_char = '|'
 let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
-let g:Tlist_Ctags_Cmd = '/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 let g:fzf_layout = { 'down': '~40%' }
 
 nnoremap <C-J> <C-W><C-J>
@@ -137,7 +136,6 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-T> :NERDTreeToggle<CR>
 nnoremap <C-F><C-F> :NERDTreeFind<CR>
-nnoremap <C-B><C-B> :TagbarToggle<CR>
 nnoremap <Leader>ig :IndentGuidesToggle<CR>
 nnoremap ∆ :m+<CR>==
 nnoremap ˚ :m-2<CR>==
@@ -148,8 +146,6 @@ map <Leader>F :Files<CR>
 map <Leader>f :Find<space>
 map <Leader>m :MerginalToggle<CR>
 map <Leader>b :Buffers<CR>
-map <Leader>G :NumbersDisable<CR>:Goyo<CR>
-map <Leader>g :NumbersEnable<CR>:Goyo!<CR>
 map <Leader>ns :%s/\s\+$//e<CR>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
