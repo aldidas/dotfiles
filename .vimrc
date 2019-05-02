@@ -4,6 +4,7 @@ set showcmd
 filetype off
 set smartcase
 set nowrap
+set noshowmode
 set number
 set cursorline
 set backspace=indent,eol,start
@@ -72,30 +73,32 @@ let g:lightline = {
     \ 'left': [ ['mode', 'paste'], [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
     \ },
     \ 'component': {
-    \   'lineinfo': '„Äã %3l:%-2v'
+    \   'lineinfo': '》 %3l:%-2v'
     \ },
     \ 'component_function': {
+    \   'fileformat': 'LightlineFileformat',
+    \   'filetype': 'LightlineFiletype',
     \   'readonly': 'LightlineReadonly',
     \   'gitbranch': 'LightlineFugitive'
     \ },
     \ 'separator': {
-    \ 'right': '„Äã', 'left': '„Ää'
+    \ 'right': '》', 'left': '《'
     \ },
     \ 'subseparator': {
-    \ 'right': '„Äã', 'left': '„Ää'
+    \ 'right': '》', 'left': '《'
     \ },
     \ 'mode_map': {
-    \ 'n' : '<N>',
-    \ 'i' : '<I>',
-    \ 'R' : '<R>',
-    \ 'v' : '<V>',
-    \ 'V' : '<VL>',
-    \ "\<C-v>": '<VB>',
-    \ 'c' : '<C>',
-    \ 's' : '<S>',
-    \ 'S' : '<SL>',
-    \ "\<C-s>": '<SB>',
-    \ 't': '<T>',
+    \ 'n' : '[N]',
+    \ 'i' : '[I]',
+    \ 'R' : '[R]',
+    \ 'v' : '[V]',
+    \ 'V' : '[VL]',
+    \ "\<C-v>": '[VB]',
+    \ 'c' : '[C]',
+    \ 's' : '[S]',
+    \ 'S' : '[SL]',
+    \ "\<C-s>": '[SB]',
+    \ 't': '[T]',
     \ }
     \ }
 function! LightlineReadonly()
@@ -107,6 +110,12 @@ function! LightlineFugitive()
         return branch !=# '' ? "\ue0a0 ".branch : ''
     endif
     return ''
+endfunction
+function! LightlineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+function! LightlineFiletype()
+    return winwidth(0) > 70 ? ($filetype !=# '' ? &filetype : 'no fit') : ''
 endfunction
 
 let g:ale_linters = {
@@ -120,6 +129,7 @@ let g:ale_sign_warning = '!'
 let g:indentLine_char = '|'
 let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
 let g:Tlist_Ctags_Cmd = '/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+let g:fzf_layout = { 'down': '~40%' }
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -129,8 +139,8 @@ nnoremap <C-T> :NERDTreeToggle<CR>
 nnoremap <C-F><C-F> :NERDTreeFind<CR>
 nnoremap <C-B><C-B> :TagbarToggle<CR>
 nnoremap <Leader>ig :IndentGuidesToggle<CR>
-nnoremap ‚àÜ :m+<CR>==
-nnoremap Àö :m-2<CR>==
+nnoremap ∆ :m+<CR>==
+nnoremap ˚ :m-2<CR>==
 map <C-Tab> :bn<CR>
 map <C-S-Tab> :bp<CR>
 map <C-P> :GFiles<CR>
@@ -171,9 +181,45 @@ set termguicolors
 set splitright
 set splitbelow
 set diffopt+=vertical
-set fillchars+=vert:‚îÇ
+set fillchars+=vert:\ 
 au BufNewFile,BufRead *.html,*.htm,*.twig,*.njk,*.nunjuck,*.swig set ft=jinja
 colorscheme dracula
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 hi CursorLine cterm=NONE ctermbg=235
 hi SignColumn guibg=235 ctermbg=235
+
+
+let s:black    = g:dracula_palette.bg
+let s:gray     = g:dracula_palette.bglight
+let s:white    = g:dracula_palette.fg
+let s:darkblue = g:dracula_palette.comment
+let s:cyan     = g:dracula_palette.cyan
+let s:green    = g:dracula_palette.green
+let s:orange   = g:dracula_palette.orange
+let s:purple   = g:dracula_palette.purple
+let s:red      = g:dracula_palette.red
+let s:yellow   = g:dracula_palette.yellow
+let s:inactive = g:dracula_palette.selection
+
+if exists('g:lightline')
+
+  let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
+  let s:p.normal.left = [ [ s:purple, s:gray ], [ s:cyan, s:gray ] ]
+  let s:p.normal.right = [ [ s:purple, s:gray ], [ s:white, s:gray ] ]
+  let s:p.inactive.right = [ [ s:inactive, s:black ], [ s:inactive, s:black ] ]
+  let s:p.inactive.left =  [ [ s:inactive, s:black ], [ s:inactive, s:black ] ]
+  let s:p.insert.left = [ [ s:green, s:gray ], [ s:cyan, s:gray ] ]
+  let s:p.replace.left = [ [ s:red, s:gray ], [ s:cyan, s:gray ] ]
+  let s:p.visual.left = [ [ s:orange, s:gray ], [ s:cyan, s:gray ] ]
+  let s:p.normal.middle = [ [ s:white, s:gray ] ]
+  let s:p.inactive.middle = [ [ s:inactive, s:black ] ]
+  let s:p.tabline.left = [ [ s:darkblue, s:gray ] ]
+  let s:p.tabline.tabsel = [ [ s:cyan, s:gray ] ]
+  let s:p.tabline.middle = [ [ s:darkblue, s:gray ] ]
+  let s:p.tabline.right = copy(s:p.normal.right)
+  let s:p.normal.error = [ [ s:gray, s:red ] ]
+  let s:p.normal.warning = [ [ s:gray, s:yellow ] ]
+
+  let g:lightline#colorscheme#dracula#palette = lightline#colorscheme#flatten(s:p)
+
+endif
