@@ -38,7 +38,6 @@ Plug 'mattn/emmet-vim'
 Plug 'itchyny/lightline.vim'
 Plug 'myusuf3/numbers.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'idanarye/vim-merginal'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
@@ -61,6 +60,8 @@ Plug 'posva/vim-vue'
 Plug 'junegunn/gv.vim'
 Plug 'jparise/vim-graphql'
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'idanarye/vim-merginal'
 
 call plug#end()
 
@@ -129,7 +130,6 @@ let g:ale_sign_warning = '!'
 let g:indentLine_char = '|'
 let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
 let g:fzf_layout = { 'down': '~40%' }
-
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -184,18 +184,17 @@ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-h
 hi CursorLine cterm=NONE ctermbg=235
 hi SignColumn guibg=235 ctermbg=235
 
-
-let s:black    = g:dracula_palette.bg
-let s:gray     = g:dracula_palette.bglight
-let s:white    = g:dracula_palette.fg
-let s:darkblue = g:dracula_palette.comment
-let s:cyan     = g:dracula_palette.cyan
-let s:green    = g:dracula_palette.green
-let s:orange   = g:dracula_palette.orange
-let s:purple   = g:dracula_palette.purple
-let s:red      = g:dracula_palette.red
-let s:yellow   = g:dracula_palette.yellow
-let s:inactive = g:dracula_palette.selection
+let s:black    = g:dracula#palette.bg
+let s:gray     = g:dracula#palette.bglight
+let s:white    = g:dracula#palette.fg
+let s:darkblue = g:dracula#palette.comment
+let s:cyan     = g:dracula#palette.cyan
+let s:green    = g:dracula#palette.green
+let s:orange   = g:dracula#palette.orange
+let s:purple   = g:dracula#palette.purple
+let s:red      = g:dracula#palette.red
+let s:yellow   = g:dracula#palette.yellow
+let s:inactive = g:dracula#palette.selection
 
 if exists('g:lightline')
 
@@ -219,3 +218,13 @@ if exists('g:lightline')
   let g:lightline#colorscheme#dracula#palette = lightline#colorscheme#flatten(s:p)
 
 endif
+
+let g:prettier#config#config_precedence = 'file-override'
+let g:prettier#config#tab_width = 2
+let g:prettier#config#use_tabs = 'false'
+let g:prettier#config#single_quote = 'true'
+let g:prettier#config#semi = 'false'
+let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#config#jsx_bracket_same_line = 'true'
+let g:prettier#config#trailing_comma = 'none'
+let g:prettier#config#arrow_parens = 'avoid'
