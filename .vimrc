@@ -62,6 +62,8 @@ Plug 'jparise/vim-graphql'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'idanarye/vim-merginal'
+Plug 'majutsushi/tagbar'
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -113,10 +115,10 @@ function! LightlineFugitive()
     return ''
 endfunction
 function! LightlineFileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
+    return winwidth(0) > 70 ? (WebDevIconsGetFileFormatSymbol() . ' ' . &fileformat) . ' ' : ''
 endfunction
 function! LightlineFiletype()
-    return winwidth(0) > 70 ? ($filetype !=# '' ? &filetype : 'no fit') : ''
+    return winwidth(0) > 70 ? (strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() . ' ' . &filetype . ' ' : 'no ft') : ''
 endfunction
 
 let g:ale_linters = {
@@ -130,6 +132,7 @@ let g:ale_sign_warning = '!'
 let g:indentLine_char = '|'
 let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
 let g:fzf_layout = { 'down': '~40%' }
+let g:webdevicons_conceal_nerdtree_brackets = 1
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -137,6 +140,7 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <C-T> :NERDTreeToggle<CR>
 nnoremap <C-F><C-F> :NERDTreeFind<CR>
 nnoremap <Leader>ig :IndentGuidesToggle<CR>
+nnoremap <C-B> :TagbarToggle<CR>
 nnoremap ∆ :m+<CR>==
 nnoremap ˚ :m-2<CR>==
 map <C-Tab> :bn<CR>
