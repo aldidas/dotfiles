@@ -58,11 +58,10 @@ Plug 'digitaltoad/vim-pug'
 Plug 'posva/vim-vue'
 Plug 'junegunn/gv.vim'
 Plug 'jparise/vim-graphql'
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'idanarye/vim-merginal'
 Plug 'ryanoasis/vim-devicons'
-Plug 'ayu-theme/ayu-vim'
+Plug 'arcticicestudio/nord-vim'
 
 call plug#end()
 
@@ -73,7 +72,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeAutoDeleteBuffer = 1
 let NERTTreeQuitOnOpen = 1
 let g:lightline = {
-    \ 'colorscheme': 'ayu',
+    \ 'colorscheme': 'nord',
     \ 'active': {
     \ 'left': [ ['mode', 'paste'], [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
     \ },
@@ -131,8 +130,7 @@ let g:ale_sign_error = 'x'
 let g:ale_sign_warning = '!'
 let g:indentLine_char = '|'
 let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
-let g:fzf_layout = { 'down': '~50%' }
-let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --line-range :300 {}'"
 let g:webdevicons_conceal_nerdtree_brackets = 1
 
 nnoremap <C-J> <C-W><C-J>
@@ -185,45 +183,51 @@ set splitbelow
 set diffopt+=vertical
 set fillchars+=vert:\ 
 au BufNewFile,BufRead *.html,*.htm,*.twig,*.njk,*.nunjuck,*.swig set ft=jinja
-let ayucolor="mirage"
-colorscheme ayu
+colorscheme nord
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 hi CursorLine cterm=NONE ctermbg=235
 hi SignColumn guibg=235 ctermbg=235
 
-let s:black    = ['#212733', 234]
-let s:gray     = ['#303540', 242] 
-let s:white    = ['#C7C7C7', 251]
-let s:darkblue = ['#272D38', 236]
-let s:cyan     = ['#95E6CB', 116] 
-let s:green    = ['#BAE67E', 150]
-let s:orange   = ['#FFA759', 220]
-let s:purple   = ['#D4BFFF', 183]
-let s:red      = ['#FF3333', 210]
-let s:yellow   = ['#FFDF80', 222]
-let s:inactive = ['#D9D7CE', 253]
+let s:nord0 = ["#2E3440", "NONE"]
+let s:nord1 = ["#3B4252", 0]
+let s:nord2 = ["#434C5E", "NONE"]
+let s:nord3 = ["#4C566A", 8]
+let s:nord4 = ["#D8DEE9", "NONE"]
+let s:nord5 = ["#E5E9F0", 7]
+let s:nord6 = ["#ECEFF4", 15]
+let s:nord7 = ["#8FBCBB", 14]
+let s:nord8 = ["#88C0D0", 6]
+let s:nord9 = ["#81A1C1", 4]
+let s:nord10 = ["#5E81AC", 12]
+let s:nord11 = ["#BF616A", 1]
+let s:nord12 = ["#D08770", 11]
+let s:nord13 = ["#EBCB8B", 3]
+let s:nord14 = ["#A3BE8C", 2]
+let s:nord15 = ["#B48EAD", 5]
 
 if exists('g:lightline')
 
   let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-  let s:p.normal.left = [ [ s:yellow, s:gray ], [ s:cyan, s:gray ] ]
-  let s:p.normal.right = [ [ s:yellow, s:gray ], [ s:white, s:gray ] ]
-  let s:p.inactive.right = [ [ s:inactive, s:black ], [ s:inactive, s:black ] ]
-  let s:p.inactive.left =  [ [ s:inactive, s:black ], [ s:inactive, s:black ] ]
-  let s:p.insert.left = [ [ s:green, s:gray ], [ s:cyan, s:gray ] ]
-  let s:p.replace.left = [ [ s:red, s:gray ], [ s:cyan, s:gray ] ]
-  let s:p.visual.left = [ [ s:orange, s:gray ], [ s:cyan, s:gray ] ]
-  let s:p.normal.middle = [ [ s:white, s:gray ] ]
-  let s:p.inactive.middle = [ [ s:inactive, s:black ] ]
-  let s:p.tabline.left = [ [ s:darkblue, s:gray ] ]
-  let s:p.tabline.tabsel = [ [ s:cyan, s:gray ] ]
-  let s:p.tabline.middle = [ [ s:darkblue, s:gray ] ]
-  let s:p.tabline.right = copy(s:p.normal.right)
-  let s:p.normal.error = [ [ s:gray, s:red ] ]
-  let s:p.normal.warning = [ [ s:gray, s:yellow ] ]
+  let s:p.normal.left = [ [ s:nord8, s:nord2 ], [ s:nord5, s:nord2 ] ]
+  let s:p.normal.middle = [ [ s:nord5, s:nord2 ] ]
+  let s:p.normal.right = [ [ s:nord5, s:nord2 ], [ s:nord5, s:nord2 ] ]
+  let s:p.normal.warning = [ [ s:nord13, s:nord2 ] ]
+  let s:p.normal.error = [ [ s:nord11, s:nord2 ] ]
 
-  let g:lightline#colorscheme#ayu#palette = lightline#colorscheme#flatten(s:p)
+  let s:p.inactive.left =  [ [ s:nord8, s:nord2 ], [ s:nord5, s:nord2 ] ]
+  let s:p.inactive.middle = g:nord_uniform_status_lines == 0 ? [ [ s:nord5, s:nord2 ] ] : [ [ s:nord5, s:nord3 ] ]
+  let s:p.inactive.right = [ [ s:nord5, s:nord2 ], [ s:nord5, s:nord2 ] ]
 
+  let s:p.insert.left = [ [ s:nord6, s:nord2 ], [ s:nord5, s:nord2 ] ]
+  let s:p.replace.left = [ [ s:nord14, s:nord2 ], [ s:nord5, s:nord2 ] ]
+  let s:p.visual.left = [ [ s:nord7, s:nord2 ], [ s:nord5, s:nord2 ] ]
+
+  let s:p.tabline.left = [ [ s:nord5, s:nord3 ] ]
+  let s:p.tabline.middle = [ [ s:nord5, s:nord3 ] ]
+  let s:p.tabline.right = [ [ s:nord5, s:nord3 ] ]
+  let s:p.tabline.tabsel = [ [ s:nord8, s:nord2 ] ]
+
+  let g:lightline#colorscheme#nord#palette = lightline#colorscheme#flatten(s:p)
 endif
 
 let g:prettier#config#config_precedence = 'file-override'
@@ -235,3 +239,4 @@ let g:prettier#config#bracket_spacing = 'true'
 let g:prettier#config#jsx_bracket_same_line = 'true'
 let g:prettier#config#trailing_comma = 'none'
 let g:prettier#config#arrow_parens = 'avoid'
+
