@@ -130,7 +130,7 @@ let g:ale_sign_error = 'x'
 let g:ale_sign_warning = '!'
 let g:indentLine_char = '|'
 let g:closetag_filenames = '*.html,*.htm,*.ejs,*.nunjuck,*.njk,*.twig'
-let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --line-range :300 {}'"
+let $FZF_DEFAULT_OPTS="--preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --theme=Nord --color=always --line-range :300 {}'"
 let g:webdevicons_conceal_nerdtree_brackets = 1
 
 nnoremap <C-J> <C-W><C-J>
@@ -181,7 +181,7 @@ set termguicolors
 set splitright
 set splitbelow
 set diffopt+=vertical
-set fillchars+=vert:\ 
+set fillchars+=vert:│
 au BufNewFile,BufRead *.html,*.htm,*.twig,*.njk,*.nunjuck,*.swig set ft=jinja
 colorscheme nord
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
@@ -206,26 +206,25 @@ let s:nord14 = ["#A3BE8C", 2]
 let s:nord15 = ["#B48EAD", 5]
 
 if exists('g:lightline')
-
   let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-  let s:p.normal.left = [ [ s:nord8, s:nord2 ], [ s:nord5, s:nord2 ] ]
-  let s:p.normal.middle = [ [ s:nord5, s:nord2 ] ]
-  let s:p.normal.right = [ [ s:nord5, s:nord2 ], [ s:nord5, s:nord2 ] ]
-  let s:p.normal.warning = [ [ s:nord13, s:nord2 ] ]
-  let s:p.normal.error = [ [ s:nord11, s:nord2 ] ]
+  let s:p.normal.left = [ [ s:nord8, s:nord3 ], [ s:nord5, s:nord3 ] ]
+  let s:p.normal.middle = [ [ s:nord5, s:nord3 ] ]
+  let s:p.normal.right = [ [ s:nord5, s:nord3 ], [ s:nord5, s:nord3 ] ]
+  let s:p.normal.warning = [ [ s:nord13, s:nord3 ] ]
+  let s:p.normal.error = [ [ s:nord11, s:nord3 ] ]
 
   let s:p.inactive.left =  [ [ s:nord8, s:nord2 ], [ s:nord5, s:nord2 ] ]
-  let s:p.inactive.middle = g:nord_uniform_status_lines == 0 ? [ [ s:nord5, s:nord2 ] ] : [ [ s:nord5, s:nord3 ] ]
+  let s:p.inactive.middle = [ [ s:nord5, s:nord2 ], [ s:nord5, s:nord2 ] ]
   let s:p.inactive.right = [ [ s:nord5, s:nord2 ], [ s:nord5, s:nord2 ] ]
 
-  let s:p.insert.left = [ [ s:nord6, s:nord2 ], [ s:nord5, s:nord2 ] ]
-  let s:p.replace.left = [ [ s:nord14, s:nord2 ], [ s:nord5, s:nord2 ] ]
-  let s:p.visual.left = [ [ s:nord7, s:nord2 ], [ s:nord5, s:nord2 ] ]
+  let s:p.insert.left = [ [ s:nord6, s:nord3 ], [ s:nord5, s:nord3 ] ]
+  let s:p.replace.left = [ [ s:nord14, s:nord3 ], [ s:nord5, s:nord3 ] ]
+  let s:p.visual.left = [ [ s:nord7, s:nord3 ], [ s:nord5, s:nord3 ] ]
 
   let s:p.tabline.left = [ [ s:nord5, s:nord3 ] ]
   let s:p.tabline.middle = [ [ s:nord5, s:nord3 ] ]
   let s:p.tabline.right = [ [ s:nord5, s:nord3 ] ]
-  let s:p.tabline.tabsel = [ [ s:nord8, s:nord2 ] ]
+  let s:p.tabline.tabsel = [ [ s:nord8, s:nord3 ] ]
 
   let g:lightline#colorscheme#nord#palette = lightline#colorscheme#flatten(s:p)
 endif
