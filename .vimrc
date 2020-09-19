@@ -213,9 +213,9 @@ if exists('g:lightline')
   let s:p.normal.warning = [ [ s:nord13, s:nord3 ] ]
   let s:p.normal.error = [ [ s:nord11, s:nord3 ] ]
 
-  let s:p.inactive.left =  [ [ s:nord8, s:nord2 ], [ s:nord5, s:nord2 ] ]
-  let s:p.inactive.middle = [ [ s:nord5, s:nord2 ], [ s:nord5, s:nord2 ] ]
-  let s:p.inactive.right = [ [ s:nord5, s:nord2 ], [ s:nord5, s:nord2 ] ]
+  let s:p.inactive.left =  [ [ s:nord3, s:nord1 ], [ s:nord3, s:nord1 ] ]
+  let s:p.inactive.middle = [ [ s:nord3, s:nord1 ], [ s:nord3, s:nord1 ] ]
+  let s:p.inactive.right = [ [ s:nord3, s:nord1 ], [ s:nord3, s:nord1 ] ]
 
   let s:p.insert.left = [ [ s:nord6, s:nord3 ], [ s:nord5, s:nord3 ] ]
   let s:p.replace.left = [ [ s:nord14, s:nord3 ], [ s:nord5, s:nord3 ] ]
