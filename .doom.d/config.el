@@ -33,13 +33,6 @@
 (setq doom-themes-enable-bold t)
 (setq doom-themes-enable-italic t)
 
-;; (use-package! poke-line
-;;   :config
-;;   (poke-line-global-mode 1)
-;;   (setq-default poke-line-pokemon "charizard"))
-
-;; (nyan-mode)
-
 (use-package! counsel-dash)
 
 (use-package! lorem-ipsum)
