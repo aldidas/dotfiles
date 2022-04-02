@@ -3,17 +3,18 @@
 (setq user-full-name "Aldi Daswanto"
       user-mail-address "aldi@daswanto.com")
 
-(setq doom-font (font-spec :family "Victor Mono 1.4" :size 13 :style "Regular 1.4" :weight 'normal :height 130)
-      doom-variable-pitch-font (font-spec :family "Lato" :style "Light" :size 11 :weight 'normal)
-      doom-serif-font (font-spec :family "Victor Mono 1.4" :size 13 :style "Italic 1.4" :weight 'normal :height 130))
+(setq doom-font (font-spec :family "Iosevka Light 1.3" :size 14 :style "Light" :weight 'normal :height 160)
+      doom-variable-pitch-font (font-spec :family "Roboto" :style "Light" :size 12 :weight 'normal)
+      doom-serif-font (font-spec :family "Iosevka Light 1.3" :size 14 :style "Light Italic" :weight 'normal :height 160))
 
 (load-theme 'doom-dracula t)
+(set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
 
 (setq org-directory "~/org/")
 (setq org-log-done 'time)
 
 (setq display-line-numbers-type 'relative)
-(solaire-global-mode -1)
 
 (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode))
@@ -30,8 +31,17 @@
       evil-operator-state-tag (propertize "🐒")
       evil-motion-state-tag (propertize "🐒"))
 
-(setq doom-themes-enable-bold t)
-(setq doom-themes-enable-italic t)
+(use-package! doom-modeline
+  :config
+  (setq doom-modeline-modal-icon nil)
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-height 40)
+  (setq doom-modeline-bar-width 8)
+  (setq doom-modeline-hud t)
+  (set-face-attribute 'mode-line nil :height 110 :font-family "Roboto")
+  (set-face-attribute 'mode-line-inactive nil :height 110 :font-family "Roboto"))
+
+(rainbow-mode)
 
 (use-package! counsel-dash)
 
@@ -45,19 +55,19 @@
 (defun special-buffer-mode-font()
   "Set custom font for special mode"
   (interactive)
-  (setq buffer-face-mode-face '(:family "Lato" :height 130))
+  (setq buffer-face-mode-face '(:family "Roboto" :height 130))
   (buffer-face-mode))
 
 (defun org-mode-buffer-font()
   "Set custom font for ORG mode"
   (interactive)
-  (setq buffer-face-mode-face '(:family "Lato" :height 120))
+  (setq buffer-face-mode-face '(:family "Roboto" :height 120))
   (buffer-face-mode))
 
 (defun special-buffer-mode-mono-font()
   "Set custom monospace font for special mode"
   (interactive)
-  (setq buffer-face-mode-face '(:family "Victor Mono 1.4" :height 110))
+  (setq buffer-face-mode-face '(:family "Iosevka Light 1.3" :height 120))
   (buffer-face-mode))
 
 (defun disable-linum()
@@ -68,18 +78,16 @@
 (defun enable-absolute-linum()
   "Enable Absolute Line Numbers"
   (interactive)
-  (if (string-equal major-mode "org-mode")
+  (if (or (string-equal major-mode "org-mode") (string-equal major-mode "vterm-mode"))
       (setq display-line-numbers nil)
-    (setq display-line-numbers 'absolute)
-    ))
+    (setq display-line-numbers 'absolute)))
 
 (defun enable-relative-linum()
   "Enable Relative Line Numbers"
   (interactive)
-  (if (string-equal major-mode "org-mode")
+  (if (or (string-equal major-mode "org-mode") (string-equal major-mode "vterm-mode"))
       (setq display-line-numbers nil)
-    (setq display-line-numbers 'relative)
-    ))
+    (setq display-line-numbers 'relative)))
 
 (defun no-bg-vue()
   (interactive)
@@ -92,7 +100,6 @@
 (add-hook! 'evil-insert-state-entry-hook 'enable-absolute-linum)
 (add-hook! 'evil-insert-state-exit-hook 'enable-relative-linum)
 (add-hook! 'mmm-mode-hook 'no-bg-vue)
-(add-hook 'term-mode-hook 'special-buffer-mode-mono-font)
 (add-hook 'vterm-mode-hook 'special-buffer-mode-mono-font)
 
 (setq org-hide-emphasis-markers t)
@@ -167,42 +174,3 @@
 (use-package! ox-reveal
   :config
   (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"))
-
-(use-package! spaceline-config
-  :config
-  (spaceline-spacemacs-theme)
-  (setq powerline-default-separator 'arrow)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  (set-face-attribute 'spaceline-evil-emacs nil :foreground "#f8f8f2")
-  (set-face-attribute 'spaceline-evil-insert nil :foreground "#000000")
-  (set-face-attribute 'spaceline-evil-normal nil :foreground "#000000")
-  (set-face-attribute 'spaceline-evil-visual nil :foreground "#FFFFFF"))
-
-(spaceline-compile
-  ; left side
-  '(((persp-name
-      window-number)
-     :face highlight-face
-     :priority 100)
-    (evil-state)
-    (anzu :priority 95)
-    auto-compile
-    ((buffer-modified buffer-size buffer-id remote-host)
-     :priority 98)
-    (major-mode :priority 79)
-    (process :when active)
-    (version-control :when active
-                     :priority 78))
-  ; right side
-  '(which-function
-    (purpose :priority 94)
-    (selection-info :priority 95)
-    input-method
-    ((buffer-encoding-abbrev
-      point-position
-      line-column)
-     :separator " ☕️ "
-     :priority 96)
-    (global :when active)
-    (buffer-position :priority 99)
-    (hud :priority 99)))
