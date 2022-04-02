@@ -21,8 +21,6 @@
 (package! lsp-ui)
 (package! hover)
 (package! lsp-treemacs)
-(package! spaceline)
 (package! blamer)
-(package! spacemacs-theme)
 (package! dimmer)
 (package! ox-reveal)
