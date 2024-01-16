@@ -1,26 +1,22 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
+
 (package! gitconfig-mode
-	  :recipe (:host github :repo "magit/git-modes"
-			 :files ("gitconfig-mode.el")))
+  :recipe (:host github :repo "magit/git-modes"
+           :files ("gitconfig-mode.el")))
 (package! gitignore-mode
-	  :recipe (:host github :repo "magit/git-modes"
-			 :files ("gitignore-mode.el")))
+  :recipe (:host github :repo "magit/git-modes"
+           :files ("gitignore-mode.el")))
 (package! csv-mode)
-(package! vue-mode)
-(package! graphql-mode)
 (package! prettier-js)
 (package! exec-path-from-shell)
-(package! counsel-dash)
 (package! dashboard)
 (package! lorem-ipsum)
-(package! nyan-mode)
-(package! poke-line)
-(package! lsp-mode)
-(package! lsp-dart)
-(package! lsp-ui)
 (package! hover)
-(package! lsp-treemacs)
 (package! blamer)
 (package! dimmer)
-(package! ox-reveal)
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! jsdoc)
+(package! multi-vterm)
+(package! doom-modeline :pin "918730eff72e")
+(package! catppuccin-theme)
