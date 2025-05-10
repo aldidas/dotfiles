@@ -3,10 +3,16 @@
 (setq user-full-name "Aldi Daswanto"
       user-mail-address "aldi@daswanto.com")
 
-(setq doom-font (font-spec :family "JetBrains Mono Light 1.3" :size 14 :style "Light" :weight 'normal :height 160)
+(defun my/toolbar-on-off ()
+  (tool-bar-mode 1)
+  (tool-bar-mode 0))
+
+(add-hook 'doom-after-init-hook (lambda () (my/toolbar-on-off)))
+
+(setq doom-font (font-spec :family "JetBrains Mono Light 1.3" :size 14 :style "ExtraLight" :weight 'normal :height 140)
       doom-variable-pitch-font (font-spec :family "Roboto" :style "Light" :size 12 :weight 'normal)
       doom-big-font (font-spec :family "Roboto" :style "Medium" :size 32 :weight 'normal)
-      doom-serif-font (font-spec :family "JetBrains Mono Light 1.3" :size 15 :style "Light Italic" :weight 'normal :height 160))
+      doom-serif-font (font-spec :family "JetBrains Mono Light 1.3" :size 14 :style "ExtraLight" :weight 'normal :height 140))
 
 (setq-default left-margin-width 1)
 (set-window-buffer nil (current-buffer))
@@ -20,13 +26,13 @@
 (defun org-mode-buffer-font()
   "Set custom font for ORG mode"
   (interactive)
-  (setq buffer-face-mode-face '(:family "JetBrains Mono Light 1.3" :height 110))
+  (setq buffer-face-mode-face '(:family "JetBrains Mono Thin" :height 110))
   (buffer-face-mode t))
 
 (defun special-buffer-mode-mono-font()
   "Set custom monospace font for special mode"
   (interactive)
-  (setq buffer-face-mode-face '(:family "JetBrains Mono Light 1.3" :height 100))
+  (setq buffer-face-mode-face '(:family "JetBrains Mono Thin" :height 100))
   (buffer-face-mode t))
 
 (add-to-list 'default-frame-alist '(height . 30))
@@ -34,10 +40,42 @@
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
-(setq doom-theme 'catppuccin)
-(setq catppuccin-flavor 'macchiato)
+(setq doom-theme 'doom-rose-pine-moon)
 (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+
+(use-package! doom-modeline
+  :ensure t
+  :config
+  (setq evil-normal-state-tag (propertize "[N]")
+        evil-insert-state-tag (propertize "[I]")
+        evil-visual-state-tag (propertize "[V]")
+        evil-replace-state-tag (propertize "[R]")
+        evil-emacs-state-tag (propertize "[E]")
+        evil-operator-state-tag (propertize "[O]")
+        evil-motion-state-tag (propertize "[M]"))
+  (setq doom-modeline-hud t)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-modal-icon nil)
+  (setq doom-modeline-lsp-icon nil)
+  (setq doom-modeline-buffer-modification-icon nil)
+  (setq doom-modeline-buffer-state-icon nil)
+  (setq doom-modeline-persp-name t)
+  (setq doom-modeline-height 40)
+  (setq doom-modeline-bar-width 5)
+  (setq nerd-icons-scale-factor 1.1)
+  (setq doom-modeline-max-length 40)
+  (setq doom-modeline-vcs-max-length 100)
+  (setq doom-modeline-check-simple-format t))
+
+(after! doom-modeline
+  (add-hook 'doom-init-ui-hook
+            (lambda ()
+              (custom-set-faces
+               '(mode-line ((t (:family "JetBrains Mono Light 1.3" :height 0.9 :background "FF"))))
+               '(mode-line-active ((t (:family "JetBrains Mono Light 1.3" :height 0.9 :background "FF"))))
+               '(mode-line-inactive ((t (:family "JetBrains Mono Light 1.3" :height 0.9 :background "FF"))))))))
 
 (use-package! rainbow-mode
   :config
@@ -54,22 +92,6 @@
   (setq dired-dwim-target t)
   (setq doom-sidebar-width 1))
 
-(setq evil-normal-state-tag (propertize "<N>")
-      evil-insert-state-tag (propertize "<I>")
-      evil-visual-state-tag (propertize "<V>")
-      evil-replace-state-tag (propertize "<R>")
-      evil-emacs-state-tag (propertize "<E>")
-      evil-operator-state-tag (propertize "<O>")
-      evil-motion-state-tag (propertize "<M>"))
-
-(use-package! doom-modeline
-  :config
-  (setq doom-modeline-hud t)
-  (setq doom-modeline-height 35)
-  (setq doom-modeline-bar-width 5)
-  (setq doom-modeline-vcs-max-length 100)
-  (setq doom-modeline-icon nil))
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
@@ -82,14 +104,14 @@
 (defun enable-absolute-linum()
   "Enable Absolute Line Numbers"
   (interactive)
-  (if (or (string-equal major-mode "org-mode") (string-equal major-mode "vterm-mode"))
+  (if (string-equal major-mode "vterm-mode")
       (setq display-line-numbers nil)
     (setq display-line-numbers 'absolute)))
 
 (defun enable-relative-linum()
   "Enable Relative Line Numbers"
   (interactive)
-  (if (or (string-equal major-mode "org-mode") (string-equal major-mode "vterm-mode"))
+  (if (string-equal major-mode "vterm-mode")
       (setq display-line-numbers nil)
     (setq display-line-numbers 'relative)))
 
@@ -98,17 +120,16 @@
 
 (use-package! dashboard
   :init
-  (setq dashboard-banner-logo-title nil)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-show-shortcuts t)
-  (setq dashboard-startup-banner "~/Pictures/doom.png")
-  (setq dashboard-center-content t)
-  (setq dashboard-set-footer t)
-  (setq dashboard-items '((recents . 5)
-                          (projects . 5)))
-  :config
-  (dashboard-setup-startup-hook))
+(setq dashboard-banner-logo-title nil)
+(setq dashboard-set-heading-icons t)
+(setq dashboard-set-file-icons t)
+(setq dashboard-show-shortcuts t)
+(setq dashboard-startup-banner "~/Pictures/doom.png")
+(setq dashboard-center-content t)
+(setq dashboard-set-footer t)
+(setq dashboard-items '((recents . 5)))
+:config
+(dashboard-setup-startup-hook))
 
 (defun shell-look ()
   (text-scale-decrease 1))
@@ -123,9 +144,9 @@
   (blamer-min-offset 70)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
-                    :background nil
-                    :height 140
-                    :italic t))))
+                   :background "unspecified"
+                   :height 140
+                   :italic t))))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -142,7 +163,6 @@
   (visual-line-mode)
   (+org-pretty-mode)
   (hl-line-mode 0)
-  ;; (hide-mode-line-mode t)
   (setq
    header-line-format " "
    left-margin-width 4
@@ -151,7 +171,6 @@
    org-edit-src-content-indentation 0)
   (set-window-buffer nil (current-buffer))
   (org-mode-buffer-font))
-  ;; (writeroom-mode))
 
 (setq org-hide-emphasis-markers t)
 (add-hook! 'org-mode-hook 'set-org-mode)
@@ -178,6 +197,38 @@
  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
+(defun lsp-booster--advice-json-parse (old-fn &rest args)
+  "Try to parse bytecode instead of json."
+  (or
+   (when (equal (following-char) ?#)
+     (let ((bytecode (read (current-buffer))))
+       (when (byte-code-function-p bytecode)
+         (funcall bytecode))))
+   (apply old-fn args)))
+(advice-add (if (progn (require 'json)
+                       (fboundp 'json-parse-buffer))
+                'json-parse-buffer
+              'json-read)
+            :around
+            #'lsp-booster--advice-json-parse)
+
+(defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+  "Prepend emacs-lsp-booster command to lsp CMD."
+  (let ((orig-result (funcall old-fn cmd test?)))
+    (if (and (not test?)                             ;; for check lsp-server-present?
+             (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+             lsp-use-plists
+             (not (functionp 'json-rpc-connection))  ;; native json-rpc
+             (executable-find "emacs-lsp-booster"))
+        (progn
+          (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+            (setcar orig-result command-from-exec-path))
+          (message "Using emacs-lsp-booster for %s!" orig-result)
+          (cons "emacs-lsp-booster" orig-result))
+      orig-result)))
+(advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+
+
 (use-package! lsp-tailwindcss
   :init
   (setq lsp-tailwindcss-add-on-mode t))
@@ -188,7 +239,9 @@
   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
-  (setq web-mode-engines-alist '(("svelte" . "\\.svelte\\'"))))
+  (add-to-list 'auto-mode-alist '("\\.razor\\'" . web-mode))
+  (setq web-mode-engines-alist '(("svelte" . "\\.svelte\\'")))
+  (setq web-mode-engines-alist '(("razor" . "\\.razor\\'"))))
 
 (use-package! flycheck
   :config
@@ -209,21 +262,15 @@
   :after tree-sitter)
 
 (define-derived-mode vue-mode web-mode "Vue")
+(setq lsp-volar-take-over-mode nil)
 
-;; (add-hook 'go-mode-hook #'lsp-deferred)
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook 'lsp-organize-imports t t))
 (add-hook 'go-mode-hook 'lsp-go-install-save-hooks)
 
-;; (after! lsp-mode
-;;   (setq lsp-go-analyses '((fieldalignment . t)
-;;                           (nilness . t)
-;;                           (shadow . t)
-;;                           (ununsedparams . t)
-;;                           (ununsedwrite . t)
-;;                           (useany . t)
-;;                           (ununsedvariable . t))))
-;; (setq lsp-dart-sdk-dir "/Users/aldidas/flutter/bin/cache/dart-sdk")
+(use-package aider
+  :config
+  (setq aider-args '("--model" "o3-mini")))
 
 (map! :leader
       :desc "Open dired"
@@ -252,6 +299,13 @@
       lsp-lens-enable t
       lsp-signature-auto-activate nil)
 
+(use-package! ultra-scroll
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
+
 (use-package! exec-path-from-shell
   :config
   (when (memq window-system '(mac ns x))
@@ -265,7 +319,16 @@
      (file-notify-rm-watch key))
    file-notify-descriptors))
 
-(defun wrap-with-anchor-ikahan-mail (lang)
+(defun insert-now-timestamp()
+  (interactive)
+  (org-insert-time-stamp (current-time) t))
+
+(defun insert-now-date()
+  (interactive)
+  "Return the current day and date as a string, without the time."
+  (insert (format-time-string "%A, %B %d, %Y")))
+
+(defun wrap-link-in-anchor (lang)
   "Wrap the highlighted text with an anchor tag using the text as the URL."
   (interactive "sEnter lang: ")
   (when (region-active-p)
@@ -280,5 +343,3 @@
 (map! :leader
       :desc "Format Link for the IKAHAN Newsletter"
       "c a" #'wrap-with-anchor-ikahan-mail)
-
-;; (setenv "PATH" (concat (getenv "PATH") ":/Users/aldidas/go/bin:/usr/local/go/bin"))
