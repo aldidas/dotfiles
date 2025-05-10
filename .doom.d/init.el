@@ -3,10 +3,9 @@
 ;; This file controls what Doom modules are enabled and what order they load
 ;; in. Remember to run 'doom sync' after modifying it!
 
+(setenv "LSP_USE_PLISTS" "1")
+
 (doom! :input
-       ;;chinese
-       ;;japanese
-       ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
        company
@@ -16,6 +15,7 @@
        doom
        doom-quit
        hl-todo
+       ligatures
        ophints
        (popup +defaults)
        (vc-gutter +pretty)
@@ -56,18 +56,13 @@
        (:if IS-MAC macos)
 
        :lang
-       ;; (dart +flutter +lsp)   ; paint ui and not much else
        (emacs-lisp +lsp +tree-sitter)
        graphql
        json
        (javascript +lsp +tree-sitter)
-       (lua +lsp +tree-sitter)
        markdown
        org
        (php +lsp +tree-sitter)
-       (python +lsp +pyright +tree-sitter)
-       (ruby +lsp +tree-sitter)
-       (go +lsp +tree-sitter)
        sh
        (web +html +css +lsp +tree-sitter)
        yaml
